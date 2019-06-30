@@ -81,6 +81,21 @@ module Constants = {
       external none: t = "none";
     };
   };
+
+  module VideoStabilization = {
+    [@bs.module "expo-camera"]
+    [@bs.scope ("Camera", "Constants", "VideoStabilization")]
+    external off: t = "off";
+    [@bs.module "expo-camera"]
+    [@bs.scope ("Camera", "Constants", "VideoStabilization")]
+    external standard: t = "standard";
+    [@bs.module "expo-camera"]
+    [@bs.scope ("Camera", "Constants", "VideoStabilization")]
+    external cinematic: t = "cinematic";
+    [@bs.module "expo-camera"]
+    [@bs.scope ("Camera", "Constants", "VideoStabilization")]
+    external auto: t = "auto";
+  };
 };
 
 type cameraType =
@@ -190,6 +205,12 @@ type faceDetectionClassifications =
   | All
   | None;
 
+type videoStabilizationMode =
+  | Off
+  | Standard
+  | Cinematic
+  | Auto;
+
 [@bs.deriving abstract]
 type barCodeScannerSettings = {barCodeTypes: array(string)};
 
@@ -219,6 +240,7 @@ let make =
          unit,
       ~barCodeScannerSettings=?,
       ~useCamera2Api=false,
+      ~videoStabilizationMode=Off,
       ~style=?,
       children,
     ) =>
@@ -276,6 +298,13 @@ let make =
       "barCodeScannerSettings":
         Js.Nullable.fromOption(barCodeScannerSettings),
       "useCamera2Api": useCamera2Api,
+      "videoStabilizationMode":
+        switch (videoStabilizationMode) {
+        | Off => Constants.VideoStabilization.off
+        | Standard => Constants.VideoStabilization.standard
+        | Cinematic => Constants.VideoStabilization.cinematic
+        | Auto => Constants.VideoStabilization.auto
+        },
       "style": Js.Undefined.fromOption(style),
     },
     children,
