@@ -191,10 +191,7 @@ type faceDetectionClassifications =
   | None;
 
 [@bs.deriving abstract]
-type barCodeScannerSettings = {
-  barCodeTypes: array(string),
-  useCamera2Api: bool,
-};
+type barCodeScannerSettings = {barCodeTypes: array(string)};
 
 [@bs.module "expo-camera"] external js: ReasonReact.reactClass = "Camera";
 
@@ -221,6 +218,7 @@ let make =
          } =>
          unit,
       ~barCodeScannerSettings=?,
+      ~useCamera2Api=false,
       ~style=?,
       children,
     ) =>
@@ -277,6 +275,7 @@ let make =
       "onBarCodeScanned": onBarCodeScanned,
       "barCodeScannerSettings":
         Js.Nullable.fromOption(barCodeScannerSettings),
+      "useCamera2Api": useCamera2Api,
       "style": Js.Undefined.fromOption(style),
     },
     children,
